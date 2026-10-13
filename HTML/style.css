@@ -1,0 +1,617 @@
+/* ========== 全局 ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 🔽 背景图可以换成你自己的 */
+  background-image: url('https://images.unsplash.com/photo-1583337130417-3346a1be7dee?q=80&w=1964&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-color: rgba(0, 0, 0, 0.25);
+  background-blend-mode: overlay;
+  padding: 1.5rem;
+}
+
+/* ========== 整体弹窗 ========== */
+.auth-modal {
+  width: 100%;
+  max-width: 900px;
+  min-height: 540px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.35);
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ========== 左侧品牌区 ========== */
+.brand-side {
+  width: 340px;
+  flex-shrink: 0;
+  background: linear-gradient(160deg, #E8F5EE 0%, #D5EBDF 60%, #C2E0D0 100%);
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1E3A32;
+}
+
+.brand-logo i {
+  font-size: 1.6rem;
+  color: #2D5A4B;
+}
+
+.brand-illustration {
+  position: relative;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.illustration-circle {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #9AD4BB, #3C8D6E);
+  opacity: 0.85;
+  top: 10px;
+  left: 20px;
+}
+
+.illustration-circle.small {
+  width: 70px;
+  height: 70px;
+  background: radial-gradient(circle at 30% 30%, #FFD8A8, #FFAE5C);
+  top: 60px;
+  left: 120px;
+  opacity: 0.9;
+}
+
+.illustration-emoji {
+  position: relative;
+  font-size: 2.4rem;
+  z-index: 2;
+  margin-top: 30px;
+}
+
+.brand-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.brand-features li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.brand-features i {
+  color: #2D5A4B;
+  font-size: 1.1rem;
+  margin-top: 2px;
+  width: 20px;
+  text-align: center;
+}
+
+.brand-features strong {
+  display: block;
+  font-size: 0.95rem;
+  color: #1E3A32;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.brand-features span {
+  font-size: 0.78rem;
+  color: #4b6b5e;
+  line-height: 1.4;
+}
+
+/* ========== 右侧表单区 ========== */
+.form-side {
+  flex: 1;
+  padding: 2.5rem 3rem 1.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 关闭按钮 */
+.close-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: #9aada4;
+  font-size: 1.1rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.close-btn:hover {
+  background: #f0f5f2;
+  color: #2D5A4B;
+}
+
+/* 顶部标签：登录 / 注册 */
+.top-tabs {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.8rem;
+  border-bottom: 1px solid #eaf2ed;
+}
+
+.top-tab {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #8aa295;
+  padding: 0 0 0.8rem;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.top-tab.active {
+  color: #1E3A32;
+  font-weight: 700;
+}
+
+.top-tab.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: #2D5A4B;
+  border-radius: 2px;
+}
+
+/* 隐藏整个顶部标签 */
+.top-tab.hide {
+  display: none;
+}
+
+/* 子标签（账号登录 / 短信登录） */
+.sub-tabs {
+  display: flex;
+  gap: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.sub-tab {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #8aa295;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.sub-tab.active {
+  color: #2D5A4B;
+}
+
+/* 表单面板 */
+.form-panel {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+}
+
+.form-panel.active {
+  display: flex;
+}
+
+.sub-form {
+  display: none;
+  flex-direction: column;
+}
+
+.sub-form.active {
+  display: flex;
+}
+
+/* 输入框 */
+.input-group {
+  margin-bottom: 1.1rem;
+}
+
+.input-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #2a4a3c;
+  margin-bottom: 0.35rem;
+}
+
+.input-field {
+  display: flex;
+  align-items: center;
+  background: #f7fbf9;
+  border: 1.5px solid #e3efe8;
+  border-radius: 12px;
+  padding: 0 0 0 0.9rem;
+  transition: all 0.2s;
+}
+
+.input-field:focus-within {
+  border-color: #3c8d6e;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(60, 141, 110, 0.12);
+}
+
+.input-field i {
+  color: #9ab5a8;
+  font-size: 0.95rem;
+  width: 1.3rem;
+  text-align: center;
+}
+
+.input-field input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0.8rem 0.8rem 0.8rem 0.5rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #1f3b31;
+}
+
+.input-field input::placeholder {
+  color: #b0c7bc;
+}
+
+.toggle-password {
+  background: transparent;
+  border: none;
+  padding: 0.5rem 0.9rem;
+  color: #9ab5a8;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.toggle-password:hover {
+  color: #2D5A4B;
+}
+
+/* 选项行 */
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.3rem 0 1.3rem;
+  font-size: 0.8rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #4b6b5e;
+  cursor: pointer;
+}
+
+.checkbox-label input {
+  accent-color: #3c8d6e;
+}
+
+.forgot-link {
+  color: #3c8d6e;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+/* 主按钮 */
+.btn-primary {
+  width: 100%;
+  padding: 0.9rem;
+  background: linear-gradient(135deg, #2D5A4B, #1E3A32);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s;
+  box-shadow: 0 8px 18px -6px rgba(30, 58, 50, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 22px -8px rgba(30, 58, 50, 0.5);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* 错误 / 成功提示 */
+.error-message {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  color: #c0392b;
+  font-size: 0.75rem;
+  margin-top: 0.3rem;
+}
+
+.error-message.show {
+  display: flex;
+}
+
+.success-message {
+  display: none;
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #1E7B4B;
+  background: rgba(30, 123, 75, 0.1);
+  padding: 0.6rem;
+  border-radius: 10px;
+}
+
+.success-message.show {
+  display: block;
+}
+
+/* 底部切换提示 */
+.switch-hint {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #7d9c8e;
+  margin-top: 1rem;
+}
+
+.switch-hint a {
+  color: #2D5A4B;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(60, 141, 110, 0.4);
+}
+
+.switch-hint a:hover {
+  border-bottom-color: #3c8d6e;
+}
+
+/* 底部第三方 */
+.footer-social {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eef5f1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.social-icons {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-icons a {
+  color: #9ab5a8;
+  font-size: 1.15rem;
+  transition: color 0.2s;
+}
+
+.social-icons a:hover {
+  color: #2D5A4B;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.78rem;
+}
+
+.footer-links a {
+  color: #7d9c8e;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: #2D5A4B;
+  text-decoration: underline;
+}
+
+/* ========== 聊天界面 ========== */
+.chat-container {
+  width: 100%;
+  max-width: 600px;
+  height: 80vh;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chat-header {
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, #2D5A4B, #1E3A32);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+}
+
+.chat-header button {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: #fff;
+  padding: 0.35rem 0.9rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  background: #f7fbf9;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.message {
+  display: flex;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message.bot {
+  justify-content: flex-start;
+}
+
+.bubble {
+  max-width: 75%;
+  padding: 0.75rem 1rem;
+  border-radius: 18px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.message.user .bubble {
+  background: #2D5A4B;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.message.bot .bubble {
+  background: #fff;
+  color: #1f3b31;
+  border: 1px solid #e3efe8;
+  border-bottom-left-radius: 4px;
+}
+
+/* 加载中动画 */
+.typing .bubble::after {
+  content: '● ● ●';
+  animation: blink 1.2s infinite;
+  color: #7d9c8e;
+  letter-spacing: 3px;
+}
+
+@keyframes blink {
+  0%, 20% { opacity: 0.3; }
+  50% { opacity: 1; }
+  80%, 100% { opacity: 0.3; }
+}
+
+.chat-input-area {
+  display: flex;
+  padding: 0.75rem;
+  background: #fff;
+  border-top: 1px solid #e3efe8;
+  gap: 0.5rem;
+}
+
+.chat-input-area input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #dbeae2;
+  border-radius: 24px;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.chat-input-area input:focus {
+  border-color: #3c8d6e;
+}
+
+.chat-input-area button {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #2D5A4B, #1E3A32);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  font-weight: 700;
+  font-family: inherit;
+}
+
+.chat-input-area button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========== 响应式：小屏时上下堆叠 ========== */
+@media (max-width: 768px) {
+  .auth-modal {
+    flex-direction: column;
+    max-width: 460px;
+  }
+  .brand-side {
+    width: 100%;
+    padding: 1.8rem 1.5rem;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  }
+  .brand-illustration {
+    display: none;
+  }
+  .brand-features {
+    display: none;
+  }
+  .form-side {
+    padding: 1.8rem 1.5rem 1rem;
+  }
+}

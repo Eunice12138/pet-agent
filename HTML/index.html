@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PetAgent · 登录 / 注册</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 整体弹窗卡片 -->
+  <div class="auth-modal" id="authModal">
+
+    <!-- 左侧品牌介绍区 -->
+    <aside class="brand-side">
+      <div class="brand-logo">
+        <i class="fas fa-paw"></i>
+        <span>PetAgent</span>
+      </div>
+
+      <div class="brand-illustration">
+        <div class="illustration-circle"></div>
+        <div class="illustration-circle small"></div>
+        <div class="illustration-emoji">🐶🐱</div>
+      </div>
+
+      <ul class="brand-features">
+        <li>
+          <i class="fas fa-shield-halved"></i>
+          <div>
+            <strong>安全存储</strong>
+            <span>加密存储，多重加固，严守隐私不外泄</span>
+          </div>
+        </li>
+        <li>
+          <i class="fas fa-robot"></i>
+          <div>
+            <strong>智能问答</strong>
+            <span>Agent + RAG，懂宠物更懂你</span>
+          </div>
+        </li>
+        <li>
+          <i class="fas fa-calendar-check"></i>
+          <div>
+            <strong>一站式服务</strong>
+            <span>预约、问诊、推荐，一个入口全搞定</span>
+          </div>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- 右侧表单区 -->
+    <main class="form-side">
+
+      <!-- 关闭按钮 -->
+      <button class="close-btn" title="关闭">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <!-- 顶部标签：登录 / 注册 -->
+      <div class="top-tabs">
+        <button class="top-tab active" id="loginTab" onclick="switchMode('login')">登录</button>
+        <button class="top-tab" id="registerTab" onclick="switchMode('register')">注册</button>
+      </div>
+
+      <!-- ========== 登录面板 ========== -->
+      <div class="form-panel" id="loginPanel">
+        <div class="sub-tabs">
+          <button class="sub-tab active" onclick="switchSubTab('login', 'password')">账号登录</button>
+          <button class="sub-tab" onclick="switchSubTab('login', 'sms')">短信登录</button>
+        </div>
+
+        <form id="loginForm" class="sub-form active" data-sub="password" onsubmit="handleLogin(event)">
+          <div class="input-group">
+            <label for="loginEmail">邮箱 / 手机号</label>
+            <div class="input-field">
+              <i class="fas fa-envelope"></i>
+              <input type="text" id="loginEmail" placeholder="your@email.com 或 手机号" autocomplete="username">
+            </div>
+            <div class="error-message" id="loginEmailError">
+              <i class="fas fa-exclamation-circle"></i> <span>请输入有效的邮箱或手机号</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="loginPassword">密码</label>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+              <button type="button" class="toggle-password" onclick="togglePassword('loginPassword', this)">
+                <i class="far fa-eye"></i>
+              </button>
+            </div>
+            <div class="error-message" id="loginPasswordError">
+              <i class="fas fa-exclamation-circle"></i> <span>密码不能少于6位</span>
+            </div>
+          </div>
+
+          <div class="form-options">
+            <label class="checkbox-label">
+              <input type="checkbox" checked> 记住我
+            </label>
+            <a href="#" class="forgot-link">忘记密码？</a>
+          </div>
+
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-arrow-right-to-bracket"></i> 登录
+          </button>
+
+          <div class="success-message" id="loginSuccess">
+            <i class="fas fa-check-circle"></i> 登录成功！正在跳转...
+          </div>
+        </form>
+
+        <form id="loginSmsForm" class="sub-form" data-sub="sms" onsubmit="event.preventDefault(); alert('短信登录功能开发中');">
+          <div class="input-group">
+            <label for="loginPhone">手机号</label>
+            <div class="input-field">
+              <i class="fas fa-mobile-screen"></i>
+              <input type="text" id="loginPhone" placeholder="请输入手机号">
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="loginSmsCode">验证码</label>
+            <div class="input-field">
+              <i class="fas fa-key"></i>
+              <input type="text" id="loginSmsCode" placeholder="6 位验证码">
+              <button type="button" class="toggle-password" onclick="alert('验证码已发送（演示）')">获取验证码</button>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-arrow-right-to-bracket"></i> 登录
+          </button>
+        </form>
+      </div>
+
+      <!-- ========== 注册面板 ========== -->
+      <div class="form-panel" id="registerPanel">
+        <div class="sub-tabs">
+          <button class="sub-tab active">账号注册</button>
+        </div>
+
+        <form id="registerForm" class="sub-form active" data-sub="register" onsubmit="handleRegister(event)">
+          <div class="input-group">
+            <label for="registerName">昵称</label>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" id="registerName" placeholder="您的昵称">
+            </div>
+            <div class="error-message" id="registerNameError">
+              <i class="fas fa-exclamation-circle"></i> <span>请输入昵称</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="registerEmail">邮箱 / 手机号</label>
+            <div class="input-field">
+              <i class="fas fa-envelope"></i>
+              <input type="text" id="registerEmail" placeholder="your@email.com 或 手机号">
+            </div>
+            <div class="error-message" id="registerEmailError">
+              <i class="fas fa-exclamation-circle"></i> <span>请输入有效的邮箱或手机号</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="registerPassword">密码</label>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="registerPassword" placeholder="至少6位字符">
+              <button type="button" class="toggle-password" onclick="togglePassword('registerPassword', this)">
+                <i class="far fa-eye"></i>
+              </button>
+            </div>
+            <div class="error-message" id="registerPasswordError">
+              <i class="fas fa-exclamation-circle"></i> <span>密码不能少于6位</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="registerConfirm">确认密码</label>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="registerConfirm" placeholder="再次输入密码">
+              <button type="button" class="toggle-password" onclick="togglePassword('registerConfirm', this)">
+                <i class="far fa-eye"></i>
+              </button>
+            </div>
+            <div class="error-message" id="registerConfirmError">
+              <i class="fas fa-exclamation-circle"></i> <span>两次密码不一致</span>
+            </div>
+          </div>
+
+          <div class="form-options">
+            <label class="checkbox-label">
+              <input type="checkbox" id="agreeTerms"> 我同意服务条款和隐私政策
+            </label>
+          </div>
+          <div class="error-message" id="agreeError" style="margin-bottom: 1rem;">
+            <i class="fas fa-exclamation-circle"></i> <span>请先同意服务条款</span>
+          </div>
+
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-user-plus"></i> 注册
+          </button>
+
+          <div class="success-message" id="registerSuccess">
+            <i class="fas fa-check-circle"></i> 注册成功！请登录
+          </div>
+        </form>
+
+        <div class="switch-hint">
+          已有账号？ <a onclick="switchMode('login')">返回登录</a>
+        </div>
+      </div>
+
+      <!-- 底部第三方登录 -->
+      <div class="footer-social">
+        <div class="social-icons">
+          <a href="#" title="微信"><i class="fab fa-weixin"></i></a>
+          <a href="#" title="QQ"><i class="fab fa-qq"></i></a>
+          <a href="#" title="微博"><i class="fab fa-weibo"></i></a>
+        </div>
+        <div class="footer-links">
+          <a href="#">跨境企业版</a>
+          <a href="#" onclick="switchMode('register')">立即注册</a>
+        </div>
+      </div>
+
+    </main>
+  </div>
+  <!-- ↑ auth-modal 结束 -->
+
+  <!-- ========== 聊天界面（登录后显示）========== -->
+  <div class="chat-container" id="chatContainer" style="display: none;">
+    <div class="chat-header">
+      <span>🐾 PetAgent 在线顾问</span>
+      <button onclick="logout()">退出</button>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <div class="message bot">
+        <div class="bubble">你好！我是 PetAgent，有什么宠物问题可以问我～</div>
+      </div>
+    </div>
+
+    <div class="chat-input-area">
+      <input
+        type="text"
+        id="chatInput"
+        placeholder="输入你的问题..."
+        onkeydown="if(event.key==='Enter') sendMessage()"
+      />
+      <button onclick="sendMessage()" id="sendBtn">发送</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
